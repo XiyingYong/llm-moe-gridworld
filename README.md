@@ -47,6 +47,48 @@ The evaluation considers goal-reaching rate, prize collection rate, trap encount
 
 The LLM router includes error handling and a heuristic fallback when API requests fail or produce invalid responses.
 
+## Experimental Results
+
+### Evaluation Across Routing Strategies
+
+The four routing strategies were evaluated on a fixed **3 × 7 grid-world**, with **50 episodes per strategy**. Goal-reaching, prize collection, and trap encounters are reported as separate metrics.
+
+![Task completion rates of four routing strategies](assets/task_completion.png)
+
+| Strategy | Reached goal | Collected prize | Hit trap |
+|---|---:|---:|---:|
+| Random expert routing | 100% | 54% | 0% |
+| Heuristic expert routing | 100% | 100% | 0% |
+| LLM-guided routing (Gemini) | 100% | 100% | 0% |
+| Global DQN benchmark | 100% | 100% | 0% |
+
+**Key observation:** All four strategies reached the goal and avoided traps in this experiment. However, random expert routing collected the prize in only 54% of episodes, compared with 100% for the other three approaches. The LLM-guided approach matched the heuristic and global DQN benchmarks on these reported task-completion metrics; these results **do not demonstrate an advantage over those two baselines**.
+
+> **Evaluation note:** The Gemini router can fall back to heuristic routing if a request fails or returns an invalid response. The current results do not separate successful Gemini calls from fallback decisions. The findings are limited to this small, predefined maze.
+
+### Example Navigation Trajectory
+
+![Example trajectory under LLM-guided expert routing](assets/llm_trajectory.png)
+
+*Example LLM-guided trajectory in the 3 × 7 maze. The agent collects the prize, avoids the trap cells, and reaches the goal in eight moves. This illustration represents one run, not the aggregate behavior of all evaluation episodes.*
+
+### DQN Training Progress
+
+The following learning curves show episode rewards and a 20-episode moving average for the three specialized DQN experts and the single global benchmark.
+
+<details>
+<summary><strong>Expand to view the four training curves</strong></summary>
+
+| Goal Expert | Prize Expert |
+|:---:|:---:|
+| ![Goal expert training](assets/training_goal.png) | ![Prize expert training](assets/training_prize.png) |
+| Trap-Avoidance Expert | Global DQN Benchmark |
+| ![Trap expert training](assets/training_trap.png) | ![Global benchmark training](assets/training_global.png) |
+
+The moving averages generally increase during training, although individual episodes remain variable. Since the agents use different task-specific reward functions, their absolute reward magnitudes should **not** be compared directly.
+
+</details>
+
 ## Technologies
 
 - **Language:** Python
