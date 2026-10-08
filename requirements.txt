@@ -1,0 +1,7 @@
+tensorflow
+gymnasium
+numpy
+matplotlib
+seaborn
+requests
+jupyter
