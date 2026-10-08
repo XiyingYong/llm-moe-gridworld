@@ -20,25 +20,9 @@ The project evaluates whether LLM-guided expert routing can coordinate specializ
 
 ## System Architecture
 
-```mermaid
-flowchart TD
-    A["Grid-World State"] --> B["Routing Mechanism"]
-    B --> C{"Expert Selection"}
-    C --> D["Goal Expert - DQN"]
-    C --> E["Prize Expert - DQN"]
-    C --> F["Trap Expert - DQN"]
-    D --> G["Action Selection"]
-    E --> G
-    F --> G
-    G --> H["Maze Environment"]
-    H --> A
+![LLM-guided expert routing architecture](assets/architecture.png)
 
-    I["Global DQN Baseline"] -.-> H
-```
-
-The routing mechanism can use random selection, predefined heuristic rules, or Gemini-based LLM decision-making.
-
-A separate global DQN serves as a benchmark without expert routing.
+*The LLM router selects one of three specialized DQN experts based on the current task context. The selected expert determines the action executed in the maze environment.*
 
 ## Specialized Experts
 
